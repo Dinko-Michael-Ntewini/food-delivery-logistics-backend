@@ -1,0 +1,4214 @@
+{
+  "info": {
+    "_postman_id": "35da2992-c8b0-4dcf-b201-d5b393c28b0a",
+    "name": "Food Delivery & Logistics API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "All actual OpenAPI operations, with role-specific Bearer variables and state progression examples. Import the Local environment, provision privileged users through trusted setup, populate their user IDs/email/password privately, register/login a customer, and execute the selected workflow in README order. Do not run every mutation sequentially: checkout aliases, assignment aliases, failure, refunds, and deletes are alternative scenarios."
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Health / System",
+      "item": [
+        {
+          "name": "GET /",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": []
+            },
+            "description": "OpenAPI: /\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "OpenAPI: /health\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "POST /auth/register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "OpenAPI: /auth/register\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{customer_email}}\",\n  \"password\": \"{{customer_password}}\",\n  \"full_name\": \"Postman Customer\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "OpenAPI: /auth/login\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{customer_email}}\",\n  \"password\": \"{{customer_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  if (data.access_token) { pm.environment.set('access_token', data.access_token); pm.environment.set('customer_token', data.access_token); }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /auth/me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            },
+            "description": "OpenAPI: /auth/me\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "OpenAPI: /auth/login\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login succeeds', function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) { const data = pm.response.json(); if (data.access_token) pm.environment.set('admin_token', data.access_token); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login owner",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "OpenAPI: /auth/login\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{owner_email}}\",\n  \"password\": \"{{owner_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login succeeds', function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) { const data = pm.response.json(); if (data.access_token) pm.environment.set('owner_token', data.access_token); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login staff",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "OpenAPI: /auth/login\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{staff_email}}\",\n  \"password\": \"{{staff_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login succeeds', function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) { const data = pm.response.json(); if (data.access_token) pm.environment.set('staff_token', data.access_token); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login driver",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "OpenAPI: /auth/login\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{driver_email}}\",\n  \"password\": \"{{driver_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login succeeds', function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) { const data = pm.response.json(); if (data.access_token) pm.environment.set('driver_token', data.access_token); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Restaurants",
+      "item": [
+        {
+          "name": "POST /restaurants",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurants",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurants"
+              ]
+            },
+            "description": "OpenAPI: /restaurants\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Kitchen\",\n  \"slug\": \"postman-kitchen\",\n  \"description\": \"Assignment demonstration\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('restaurant_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /restaurants",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurants?page=1&page_size=20&sort=name",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurants"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Jollof",
+                  "disabled": true
+                },
+                {
+                  "key": "location",
+                  "value": "Accra",
+                  "disabled": true
+                },
+                {
+                  "key": "active",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "page_size",
+                  "value": "20",
+                  "disabled": false
+                },
+                {
+                  "key": "sort",
+                  "value": "name",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "OpenAPI: /restaurants\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /restaurants/{rid}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurants/{{restaurant_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurants",
+                "{{restaurant_id}}"
+              ]
+            },
+            "description": "OpenAPI: /restaurants/{rid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /restaurants/{rid}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurants/{{restaurant_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurants",
+                "{{restaurant_id}}"
+              ]
+            },
+            "description": "OpenAPI: /restaurants/{rid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Kitchen\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Branches",
+      "item": [
+        {
+          "name": "POST /restaurants/{rid}/branches",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurants/{{restaurant_id}}/branches",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurants",
+                "{{restaurant_id}}",
+                "branches"
+              ]
+            },
+            "description": "OpenAPI: /restaurants/{rid}/branches\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Main\",\n  \"line1\": \"1 Example Street\",\n  \"city\": \"Accra\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('branch_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /restaurants/{rid}/branches",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurants/{{restaurant_id}}/branches",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurants",
+                "{{restaurant_id}}",
+                "branches"
+              ]
+            },
+            "description": "OpenAPI: /restaurants/{rid}/branches\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /branches/{bid}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/branches/{{branch_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "branches",
+                "{{branch_id}}"
+              ]
+            },
+            "description": "OpenAPI: /branches/{bid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /branches/{bid}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/branches/{{branch_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "branches",
+                "{{branch_id}}"
+              ]
+            },
+            "description": "OpenAPI: /branches/{bid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"city\": \"Accra\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Restaurant Staff",
+      "item": [
+        {
+          "name": "POST /restaurants/{rid}/staff",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurants/{{restaurant_id}}/staff",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurants",
+                "{{restaurant_id}}",
+                "staff"
+              ]
+            },
+            "description": "OpenAPI: /restaurants/{rid}/staff\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{staff_user_id}}\",\n  \"branch_id\": \"{{branch_id}}\",\n  \"staff_role\": \"STAFF\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('staff_membership_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /restaurants/{rid}/staff",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurants/{{restaurant_id}}/staff",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurants",
+                "{{restaurant_id}}",
+                "staff"
+              ]
+            },
+            "description": "OpenAPI: /restaurants/{rid}/staff\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /restaurants/{rid}/staff/{sid}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurants/{{restaurant_id}}/staff/{{staff_membership_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurants",
+                "{{restaurant_id}}",
+                "staff",
+                "{{staff_membership_id}}"
+              ]
+            },
+            "description": "OpenAPI: /restaurants/{rid}/staff/{sid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /restaurants/{rid}/staff/{sid}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurants/{{restaurant_id}}/staff/{{staff_membership_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurants",
+                "{{restaurant_id}}",
+                "staff",
+                "{{staff_membership_id}}"
+              ]
+            },
+            "description": "OpenAPI: /restaurants/{rid}/staff/{sid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Menus",
+      "item": [
+        {
+          "name": "POST /restaurants/{rid}/menus",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurants/{{restaurant_id}}/menus",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurants",
+                "{{restaurant_id}}",
+                "menus"
+              ]
+            },
+            "description": "OpenAPI: /restaurants/{rid}/menus\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lunch\",\n  \"description\": \"Lunch menu\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('menu_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /restaurants/{rid}/menus",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/restaurants/{{restaurant_id}}/menus",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "restaurants",
+                "{{restaurant_id}}",
+                "menus"
+              ]
+            },
+            "description": "OpenAPI: /restaurants/{rid}/menus\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /menus/{mid}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/menus/{{menu_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "menus",
+                "{{menu_id}}"
+              ]
+            },
+            "description": "OpenAPI: /menus/{mid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /menus/{mid}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/menus/{{menu_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "menus",
+                "{{menu_id}}"
+              ]
+            },
+            "description": "OpenAPI: /menus/{mid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lunch\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "POST /menus/{mid}/categories",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/menus/{{menu_id}}/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "menus",
+                "{{menu_id}}",
+                "categories"
+              ]
+            },
+            "description": "OpenAPI: /menus/{mid}/categories\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Meals\",\n  \"display_order\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('category_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /menus/{mid}/categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/menus/{{menu_id}}/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "menus",
+                "{{menu_id}}",
+                "categories"
+              ]
+            },
+            "description": "OpenAPI: /menus/{mid}/categories\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /categories/{cid}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/categories/{{category_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "{{category_id}}"
+              ]
+            },
+            "description": "OpenAPI: /categories/{cid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /categories/{cid}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/categories/{{category_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "{{category_id}}"
+              ]
+            },
+            "description": "OpenAPI: /categories/{cid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"display_order\": 1,\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /categories/{cid}/products",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/categories/{{category_id}}/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "{{category_id}}",
+                "products"
+              ]
+            },
+            "description": "OpenAPI: /categories/{cid}/products\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jollof\",\n  \"base_price\": \"20.00\",\n  \"description\": \"Rice meal\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('category_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "POST /products",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "description": "OpenAPI: /products\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category_id\": \"{{category_id}}\",\n  \"name\": \"Jollof\",\n  \"base_price\": \"20.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('product_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/products?page=1&page_size=20&sort=name",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Jollof",
+                  "disabled": true
+                },
+                {
+                  "key": "category_id",
+                  "value": "{{category_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "restaurant_id",
+                  "value": "{{restaurant_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "min_price",
+                  "value": "10.00",
+                  "disabled": true
+                },
+                {
+                  "key": "max_price",
+                  "value": "30.00",
+                  "disabled": true
+                },
+                {
+                  "key": "available",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "page_size",
+                  "value": "20",
+                  "disabled": false
+                },
+                {
+                  "key": "sort",
+                  "value": "name",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "OpenAPI: /products\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products/search",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/products/search?page=1&page_size=20&sort=name",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Jollof",
+                  "disabled": true
+                },
+                {
+                  "key": "category_id",
+                  "value": "{{category_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "restaurant_id",
+                  "value": "{{restaurant_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "min_price",
+                  "value": "10.00",
+                  "disabled": true
+                },
+                {
+                  "key": "max_price",
+                  "value": "30.00",
+                  "disabled": true
+                },
+                {
+                  "key": "available",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "page_size",
+                  "value": "20",
+                  "disabled": false
+                },
+                {
+                  "key": "sort",
+                  "value": "name",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "OpenAPI: /products/search\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products/{pid}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/products/{{product_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "{{product_id}}"
+              ]
+            },
+            "description": "OpenAPI: /products/{pid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /products/{pid}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/products/{{product_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "{{product_id}}"
+              ]
+            },
+            "description": "OpenAPI: /products/{pid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"base_price\": \"20.00\",\n  \"is_available\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Product Variants",
+      "item": [
+        {
+          "name": "POST /products/{pid}/variants",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/products/{{product_id}}/variants",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "{{product_id}}",
+                "variants"
+              ]
+            },
+            "description": "OpenAPI: /products/{pid}/variants\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Large\",\n  \"price_delta\": \"5.00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('variant_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /products/{pid}/variants",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{base_url}}/products/{{product_id}}/variants",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "{{product_id}}",
+                "variants"
+              ]
+            },
+            "description": "OpenAPI: /products/{pid}/variants\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /variants/{vid}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/variants/{{variant_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "variants",
+                "{{variant_id}}"
+              ]
+            },
+            "description": "OpenAPI: /variants/{vid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price_delta\": \"5.00\",\n  \"is_available\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Customer Profile",
+      "item": [
+        {
+          "name": "GET /customers/me/profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/me/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "me",
+                "profile"
+              ]
+            },
+            "description": "OpenAPI: /customers/me/profile\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /customers/me/profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/me/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "me",
+                "profile"
+              ]
+            },
+            "description": "OpenAPI: /customers/me/profile\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"preferred_contact_method\": \"PHONE\",\n  \"marketing_opt_in\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Addresses",
+      "item": [
+        {
+          "name": "GET /customers/me/addresses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/me/addresses",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "me",
+                "addresses"
+              ]
+            },
+            "description": "OpenAPI: /customers/me/addresses\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /customers/me/addresses",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/me/addresses",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "me",
+                "addresses"
+              ]
+            },
+            "description": "OpenAPI: /customers/me/addresses\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Home\",\n  \"recipient_name\": \"Customer\",\n  \"recipient_phone\": \"123\",\n  \"line1\": \"2 Example Street\",\n  \"city\": \"Accra\",\n  \"is_default\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('address_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /customers/me/addresses/{aid}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/me/addresses/{{address_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "me",
+                "addresses",
+                "{{address_id}}"
+              ]
+            },
+            "description": "OpenAPI: /customers/me/addresses/{aid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /customers/me/addresses/{aid}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/me/addresses/{{address_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "me",
+                "addresses",
+                "{{address_id}}"
+              ]
+            },
+            "description": "OpenAPI: /customers/me/addresses/{aid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"line1\": \"2 Example Street\",\n  \"is_default\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /customers/me/addresses/{aid}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/me/addresses/{{address_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "me",
+                "addresses",
+                "{{address_id}}"
+              ]
+            },
+            "description": "OpenAPI: /customers/me/addresses/{aid}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "item": [
+        {
+          "name": "GET /cart",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/cart",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            },
+            "description": "OpenAPI: /cart\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /cart/items",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/cart/items",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart",
+                "items"
+              ]
+            },
+            "description": "OpenAPI: /cart/items\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_id\": \"{{product_id}}\",\n  \"branch_id\": \"{{branch_id}}\",\n  \"quantity\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  if (data.items && data.items[0]) pm.environment.set('cart_item_id', data.items[0].id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /cart/items/{cart_item_id}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/cart/items/{{cart_item_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart",
+                "items",
+                "{{cart_item_id}}"
+              ]
+            },
+            "description": "OpenAPI: /cart/items/{cart_item_id}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /cart/items/{cart_item_id}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/cart/items/{{cart_item_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart",
+                "items",
+                "{{cart_item_id}}"
+              ]
+            },
+            "description": "OpenAPI: /cart/items/{cart_item_id}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add variant item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/cart/items",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart",
+                "items"
+              ]
+            },
+            "description": "OpenAPI: /cart/items\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_id\": \"{{product_id}}\",\n  \"product_variant_id\": \"{{variant_id}}\",\n  \"branch_id\": \"{{branch_id}}\",\n  \"quantity\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  if (data.items && data.items[0]) pm.environment.set('cart_item_id', data.items[0].id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "POST /orders",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders"
+              ]
+            },
+            "description": "OpenAPI: /orders\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address_id\": \"{{address_id}}\",\n  \"payment_method\": \"MOBILE_MONEY\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('order_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/orders?page=1&page_size=20&sort=-placed_at",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "page_size",
+                  "value": "20",
+                  "disabled": false
+                },
+                {
+                  "key": "status",
+                  "value": "PENDING",
+                  "disabled": true
+                },
+                {
+                  "key": "restaurant_id",
+                  "value": "{{restaurant_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "branch_id",
+                  "value": "{{branch_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "Jollof",
+                  "disabled": true
+                },
+                {
+                  "key": "customer_id",
+                  "value": "{{customer_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "date_from",
+                  "value": "2026-01-01T00:00:00Z",
+                  "disabled": true
+                },
+                {
+                  "key": "date_to",
+                  "value": "2026-12-31T23:59:59Z",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "-placed_at",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "OpenAPI: /orders\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /orders/checkout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/orders/checkout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "checkout"
+              ]
+            },
+            "description": "OpenAPI: /orders/checkout\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address_id\": \"{{address_id}}\",\n  \"payment_method\": \"MOBILE_MONEY\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('order_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /orders/{order_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/orders/{{order_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "{{order_id}}"
+              ]
+            },
+            "description": "OpenAPI: /orders/{order_id}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /orders/{order_id}/status-history",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/orders/{{order_id}}/status-history",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "{{order_id}}",
+                "status-history"
+              ]
+            },
+            "description": "OpenAPI: /orders/{order_id}/status-history\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /orders/{order_id}/status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/orders/{{order_id}}/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "{{order_id}}",
+                "status"
+              ]
+            },
+            "description": "OpenAPI: /orders/{order_id}/status\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"CONFIRMED\",\n  \"reason\": \"Restaurant accepted\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Order PREPARING",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/orders/{{order_id}}/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "{{order_id}}",
+                "status"
+              ]
+            },
+            "description": "OpenAPI: /orders/{order_id}/status\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"PREPARING\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Order READY_FOR_PICKUP",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/orders/{{order_id}}/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "{{order_id}}",
+                "status"
+              ]
+            },
+            "description": "OpenAPI: /orders/{order_id}/status\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"READY_FOR_PICKUP\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "POST /payments",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/payments",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payments"
+              ]
+            },
+            "description": "OpenAPI: /payments\nIdempotently return the Payment created by checkout. Never creates a second Payment.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": \"{{order_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('payment_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /payments/{payment_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/payments/{{payment_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payments",
+                "{{payment_id}}"
+              ]
+            },
+            "description": "OpenAPI: /payments/{payment_id}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /orders/{order_id}/payments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/orders/{{order_id}}/payments",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "{{order_id}}",
+                "payments"
+              ]
+            },
+            "description": "OpenAPI: /orders/{order_id}/payments\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('payment_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /payments/{payment_id}/confirm",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/payments/{{payment_id}}/confirm",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payments",
+                "{{payment_id}}",
+                "confirm"
+              ]
+            },
+            "description": "OpenAPI: /payments/{payment_id}/confirm\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /payments/{payment_id}/fail",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/payments/{{payment_id}}/fail",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payments",
+                "{{payment_id}}",
+                "fail"
+              ]
+            },
+            "description": "OpenAPI: /payments/{payment_id}/fail\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Refunds",
+      "item": [
+        {
+          "name": "POST /payments/{payment_id}/refunds",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/payments/{{payment_id}}/refunds",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payments",
+                "{{payment_id}}",
+                "refunds"
+              ]
+            },
+            "description": "OpenAPI: /payments/{payment_id}/refunds\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": \"5.00\",\n  \"reason\": \"Customer service adjustment\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('refund_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /payments/{payment_id}/refunds",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/payments/{{payment_id}}/refunds",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payments",
+                "{{payment_id}}",
+                "refunds"
+              ]
+            },
+            "description": "OpenAPI: /payments/{payment_id}/refunds\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /refunds/{refund_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/refunds/{{refund_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "refunds",
+                "{{refund_id}}"
+              ]
+            },
+            "description": "OpenAPI: /refunds/{refund_id}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Drivers",
+      "item": [
+        {
+          "name": "GET /drivers/me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{driver_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/drivers/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "drivers",
+                "me"
+              ]
+            },
+            "description": "OpenAPI: /drivers/me\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /drivers/me/deliveries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{driver_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/drivers/me/deliveries",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "drivers",
+                "me",
+                "deliveries"
+              ]
+            },
+            "description": "OpenAPI: /drivers/me/deliveries\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /drivers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/drivers?sort=created_at",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "drivers"
+              ],
+              "query": [
+                {
+                  "key": "is_available",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "created_at",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "OpenAPI: /drivers\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /drivers",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/drivers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "drivers"
+              ]
+            },
+            "description": "OpenAPI: /drivers\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"{{driver_user_id}}\",\n  \"vehicle_type\": \"bike\",\n  \"is_available\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('driver_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /drivers/{driver_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/drivers/{{driver_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "drivers",
+                "{{driver_id}}"
+              ]
+            },
+            "description": "OpenAPI: /drivers/{driver_id}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /drivers/{driver_id}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{driver_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/drivers/{{driver_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "drivers",
+                "{{driver_id}}"
+              ]
+            },
+            "description": "OpenAPI: /drivers/{driver_id}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_available\": true,\n  \"vehicle_type\": \"bike\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Deliveries",
+      "item": [
+        {
+          "name": "POST /orders/{order_id}/delivery",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/orders/{{order_id}}/delivery",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "{{order_id}}",
+                "delivery"
+              ]
+            },
+            "description": "OpenAPI: /orders/{order_id}/delivery\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"note\": \"Ready for dispatch\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "  const entity = Array.isArray(data) ? data[0] : data; if (entity && entity.id) pm.environment.set('delivery_id', entity.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /deliveries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/deliveries?sort=created_at",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "deliveries"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "ASSIGNED",
+                  "disabled": true
+                },
+                {
+                  "key": "driver_id",
+                  "value": "{{driver_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "order_id",
+                  "value": "{{order_id}}",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "created_at",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "OpenAPI: /deliveries\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /deliveries/{delivery_id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/deliveries/{{delivery_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "deliveries",
+                "{{delivery_id}}"
+              ]
+            },
+            "description": "OpenAPI: /deliveries/{delivery_id}\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /deliveries/{delivery_id}/status-history",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/deliveries/{{delivery_id}}/status-history",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "deliveries",
+                "{{delivery_id}}",
+                "status-history"
+              ]
+            },
+            "description": "OpenAPI: /deliveries/{delivery_id}/status-history\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /deliveries/{delivery_id}/assign-driver",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/deliveries/{{delivery_id}}/assign-driver",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "deliveries",
+                "{{delivery_id}}",
+                "assign-driver"
+              ]
+            },
+            "description": "OpenAPI: /deliveries/{delivery_id}/assign-driver\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"driver_id\": \"{{driver_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /deliveries/{delivery_id}/assign",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{owner_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/deliveries/{{delivery_id}}/assign",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "deliveries",
+                "{{delivery_id}}",
+                "assign"
+              ]
+            },
+            "description": "OpenAPI: /deliveries/{delivery_id}/assign\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"driver_id\": \"{{driver_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PATCH /deliveries/{delivery_id}/status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{driver_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/deliveries/{{delivery_id}}/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "deliveries",
+                "{{delivery_id}}",
+                "status"
+              ]
+            },
+            "description": "OpenAPI: /deliveries/{delivery_id}/status\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"PICKED_UP\",\n  \"note\": \"Collected from restaurant\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delivery IN_TRANSIT",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{driver_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/deliveries/{{delivery_id}}/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "deliveries",
+                "{{delivery_id}}",
+                "status"
+              ]
+            },
+            "description": "OpenAPI: /deliveries/{delivery_id}/status\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"IN_TRANSIT\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delivery DELIVERED",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{driver_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/deliveries/{{delivery_id}}/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "deliveries",
+                "{{delivery_id}}",
+                "status"
+              ]
+            },
+            "description": "OpenAPI: /deliveries/{delivery_id}/status\nUse a valid resource ID and authorized role. Workflow mutations must follow the documented state sequence.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"DELIVERED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Successful response', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]); });",
+                  "if (pm.response.code >= 200 && pm.response.code < 300 && pm.response.text()) {",
+                  "  const data = pm.response.json();",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    }
+  ]
+}
