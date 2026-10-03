@@ -206,4 +206,4 @@ Internal payment simulation; zero delivery fee by default; trusted privileged-Us
 
 ## Project status
 
-All ten stages complete. See [final deliverables](docs/final_deliverables.md), [Stage 10 review](docs/stage10_review.md) and [pre-GitHub audit](docs/pre_github_review.md) for evidence. Earlier reviews are historical snapshots, not the final inventory. A local Git repository has now been initialized on main using the existing configured identity. GitHub publication is awaiting the intended repository URL; no remote or push has been created.
+All ten stages complete. See [final deliverables](docs/final_deliverables.md), [Stage 10 review](docs/stage10_review.md) and [pre-GitHub audit](docs/pre_github_review.md) for evidence. Earlier reviews are historical snapshots, not the final inventory. GitHub publication is complete: the [public repository](https://github.com/Dinko-Michael-Ntewini/food-delivery-logistics-backend) is available on the default branch `main`. The project is ready for review/submission.

@@ -1,6 +1,6 @@
 # Stage 10 final review
 
-> Historical Stage 10 completion snapshot: 80 tests passed at that point. The subsequent [pre-GitHub audit](pre_github_review.md) adds three query/route compatibility tests and records the current publication blocker. This review does not claim a GitHub push.
+> Historical Stage 10 completion snapshot: 80 tests passed at that point. The subsequent [pre-GitHub audit](pre_github_review.md) adds three query/route compatibility tests and records the publication blocker at that time. Publication occurred after these historical reviews; the [public repository](https://github.com/Dinko-Michael-Ntewini/food-delivery-logistics-backend) is now available on the default branch `main`.
 
 Date: 2026-10-02. Scope: final audit, compliance repairs, verification and submission documentation; no unrelated features. The original eight-page image-only PDF was visually inspected. The previous 77 tests were preserved.
 

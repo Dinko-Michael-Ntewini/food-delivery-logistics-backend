@@ -1,6 +1,6 @@
 # Final pre-GitHub audit
 
-> Historical pre-initialization audit. Following this audit, the user authorized local Git initialization on main with the existing configured identity. GitHub publication remains awaiting the intended repository URL; no remote or push is authorized yet. The original blocker and results below describe the audit's earlier state.
+> Historical pre-initialization audit. Following this audit, the user authorized local Git initialization on main with the existing configured identity. Publication occurred afterward; the [public repository](https://github.com/Dinko-Michael-Ntewini/food-delivery-logistics-backend) is now available on the default branch `main`. The original blocker and results below describe the audit's earlier state, not the current publication status.
 
 Date: 2026-10-02. Implementation verification: PASS. GitHub publication: BLOCKED.
 
