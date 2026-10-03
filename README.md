@@ -196,7 +196,9 @@ JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```
 
-Migrate/check before startup. UUID/Numeric, non-native enums, Boolean/partial indexes, Alembic and row locks were statically inspected; all 20 tables and indexes compile for PostgreSQL. NOT LIVE-TESTED ON POSTGRESQL. SQLite tests do not prove PostgreSQL concurrency; validate a real deployment before production.
+Migrate/check before startup. Live PostgreSQL 17.10 verification passed on 2026-10-03: all 83 tests, all six migrations (including an empty-database downgrade/upgrade round trip), Alembic check, the complete customer-to-delivered workflow, and live HTTP/persistence checks. A two-connection probe verified PostgreSQL row-lock contention and release. This is local compatibility verification, not production load/concurrency certification. See [live PostgreSQL verification](docs/postgresql_verification.md).
+
+To run the same suite against a disposable PostgreSQL database, set `TEST_POSTGRES_URL` to a `postgresql+psycopg://...` URL whose database name starts with `test_`, then run `python -m pytest tests -q -p no:cacheprovider`. Each database-backed test creates and removes its own random schema; the test account needs schema-creation permission. Never use production credentials. Without this variable, tests retain their isolated SQLite default.
 
 ## Known development limitations
 

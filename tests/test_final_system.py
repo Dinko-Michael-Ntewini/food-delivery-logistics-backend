@@ -11,18 +11,16 @@ from alembic import command
 from alembic.config import Config
 from alembic.script import ScriptDirectory
 from fastapi.testclient import TestClient
-from sqlalchemy import Numeric, Uuid, create_engine, inspect, select, text
+from sqlalchemy import Numeric, Uuid, inspect, select, text
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import configure_mappers, sessionmaker
-from sqlalchemy.pool import StaticPool
 from sqlalchemy.schema import CreateIndex, CreateTable
 
 from app import models
-from app.core.config import get_settings
 from app.core.enums import UserRole
 from app.core.security import hash_password
 from app.db.base import Base
-from app.db.session import configure_sqlite, get_db
+from app.db.session import get_db
 from app.main import app
 from app.models.identity import User
 from app.models.payment import Payment
@@ -76,20 +74,20 @@ def test_final_models_relationships_and_postgresql_ddl_compile():
 
 
 @pytest.fixture()
-def migrated_system(monkeypatch):
+def migrated_system(test_engine):
     """Real zero-to-head migrations, not metadata.create_all; no developer DB touched."""
-    monkeypatch.setenv("SECRET_KEY", "final-system-test-secret-that-is-long-enough")
-    monkeypatch.setenv("DATABASE_URL", "sqlite://")
-    get_settings.cache_clear()
-    engine = create_engine("sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool)
-    configure_sqlite(engine)
+    engine = test_engine
     config = Config(str(ROOT / "alembic.ini"), stdout=io.StringIO())
     with engine.connect() as connection:
         config.attributes["connection"] = connection
         command.upgrade(config, "head")
         command.check(config)
         assert connection.scalar(text("SELECT version_num FROM alembic_version")) == "c5b21d4e8f32"
-        assert connection.scalar(text("PRAGMA foreign_keys")) == 1
+        if engine.dialect.name == "sqlite":
+            assert connection.scalar(text("PRAGMA foreign_keys")) == 1
+        else:
+            assert connection.scalar(text("SELECT count(*) FROM pg_constraint WHERE contype = 'f' "
+                                          "AND connamespace = current_schema()::regnamespace")) > 0
         connection.commit()
     assert set(inspect(engine).get_table_names()) == set(Base.metadata.tables) | {"alembic_version"}
     session = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)()
@@ -106,8 +104,6 @@ def migrated_system(monkeypatch):
     finally:
         app.dependency_overrides.clear()
         session.close()
-        engine.dispose()
-        get_settings.cache_clear()
 
 
 def test_fresh_migrations_full_customer_to_delivered_workflow(migrated_system):
@@ -185,7 +181,11 @@ def test_fresh_migrations_full_customer_to_delivered_workflow(migrated_system):
     history = call("GET", f"/deliveries/{delivery['id']}/status-history", actor="driver")
     assert [row["to_status"] for row in history] == ["UNASSIGNED", "ASSIGNED", "PICKED_UP", "IN_TRANSIT", "DELIVERED"]
     assert call("GET", "/cart", actor="customer")["items"] == []
-    assert db.execute(text("PRAGMA foreign_key_check")).all() == []
+    if db.bind.dialect.name == "sqlite":
+        assert db.execute(text("PRAGMA foreign_key_check")).all() == []
+    else:
+        assert db.scalar(text("SELECT count(*) FROM pg_constraint WHERE contype = 'f' "
+                              "AND connamespace = current_schema()::regnamespace AND NOT convalidated")) == 0
 
 
 def test_postman_artifacts_cover_openapi_and_use_schema_valid_examples():

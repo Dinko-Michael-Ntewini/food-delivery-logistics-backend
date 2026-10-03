@@ -71,7 +71,7 @@ Payment creation remains inside atomic checkout; POST /payments never introduces
 - Fresh empty disposable SQLite database migrates from zero; the representative full API workflow runs against that migrated schema, not create_all.
 - Developer food_delivery.db is preserved; no temporary audit database remains.
 - PostgreSQL UUID/Numeric, non-native enums, Boolean/partial predicates, migration dialect handling and FOR UPDATE paths were inspected. All model table/index DDL compiles for PostgreSQL.
-- NOT LIVE-TESTED ON POSTGRESQL. This is a declared production-validation limitation, not a claim of live compatibility testing.
+- Subsequent live PostgreSQL 17.10 verification passed: 83 tests, real migrations/check, the full migrated API workflow, live HTTP/persistence and a two-connection row-lock probe. See [verification evidence](postgresql_verification.md); production load/concurrency validation remains separate.
 
 ## Submission inventory and hygiene
 

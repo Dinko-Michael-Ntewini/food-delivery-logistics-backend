@@ -84,7 +84,7 @@ Every original deliverable is mapped in final_deliverables.md. README, ER/data/R
 | Duplicate operation IDs | 0 |
 | Bearer-protected visible operations | 56 |
 
-Two upstream Starlette/AnyIO deprecation warnings remain, not application failures. No tests were weakened. No new migration or model was needed. PostgreSQL static/schema checks pass; NOT LIVE-TESTED ON POSTGRESQL.
+Two upstream Starlette/AnyIO deprecation warnings remain, not application failures. No tests were weakened. No new migration or model was needed. PostgreSQL static/schema checks pass. Subsequent live PostgreSQL verification passed all 83 tests and migrations; see [live verification](postgresql_verification.md) for current evidence and remaining production boundaries.
 
 ## Documentation and Postman
 

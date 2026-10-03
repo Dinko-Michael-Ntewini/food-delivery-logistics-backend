@@ -90,7 +90,7 @@ Environment path: postman/Food_Delivery_Local.postman_environment.json.
 
 ## PostgreSQL and production boundary
 
-PASS for static compatibility audit: all 20 table/index DDL statements compile for PostgreSQL; generic UUID, Numeric/Decimal, non-native enums, Boolean partial predicates, dialect-aware migrations and FOR UPDATE service paths inspected. NOT LIVE-TESTED ON POSTGRESQL. SQLite does not verify row-lock/concurrency behavior. This limitation is explicitly documented, as required; a real production database deployment needs its own validation.
+PASS for static compatibility audit: all 20 table/index DDL statements compile for PostgreSQL; generic UUID, Numeric/Decimal, non-native enums, Boolean partial predicates, dialect-aware migrations and FOR UPDATE service paths inspected. Subsequent live PostgreSQL 17.10 verification also passed: all 83 tests, migrations/check, migrated end-to-end workflow, live HTTP/persistence and a row-lock contention/release probe. See [live verification](postgresql_verification.md). Production deployment and concurrent business-request stress testing remain separate checks.
 
 Manual payments/refunds, zero default delivery fee and trusted privileged-user provisioning remain deliberate development limitations. No unrelated external payment, frontend, GPS, notification or infrastructure functionality was added.
 
